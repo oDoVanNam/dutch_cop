@@ -7,6 +7,8 @@ module Rubocop
         include RuboCop::Cop::RangeHelp
         extend RuboCop::Cop::AutoCorrector
 
+        MSG = 'Missing project hash comment.'
+
         def on_new_investigation
           return if processed_source.tokens.empty? || hash_code_exists?
 
@@ -22,7 +24,7 @@ module Rubocop
         def missing_offense(processed_source)
           range = source_range(processed_source.buffer, 0, 0)
 
-          add_offense(range, message: 'Missing project hash comment.') { |corrector| insert_comment(corrector) }
+          add_offense(range) { |corrector| insert_comment(corrector) }
         end
 
         def insert_comment(corrector)

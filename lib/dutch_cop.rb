@@ -4,6 +4,6 @@ require_relative 'rubocop/dutch_cop/version'
 
 require 'rubocop'
 
-require 'rubocop/cop/dutch_cop/project_hash'
+Dir[File.join(__dir__, 'rubocop', 'cop', '**', '*.rb')].sort.each { |file| require file }
 
 module DutchCop; end
