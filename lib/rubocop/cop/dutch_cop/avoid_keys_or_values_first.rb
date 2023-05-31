@@ -6,7 +6,7 @@ module Rubocop
       class AvoidKeysOrValuesFirst < RuboCop::Cop::Base
         extend RuboCop::Cop::AutoCorrector
 
-        MSG = 'Use %<prefer>s` instead of `%<current>s`. This reduces memory usage.'
+        MSG = 'Use `%<prefer>s` instead of `%<current>s`. This reduces memory usage.'
         CORRECT_METHODS = {
           keys: 'each_key',
           values: 'each_value'

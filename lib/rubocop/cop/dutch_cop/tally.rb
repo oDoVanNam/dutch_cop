@@ -7,10 +7,10 @@ module Rubocop
         extend RuboCop::Cop::AutoCorrector
 
         MSG = 'Preferred `tally` over `group_by(&:itself).transform_values(&:count)`'
-        RESTRICT_ON_SEND = %i[group_by transform_values].freeze
+        RESTRICT_ON_SEND = [:group_by, :transform_values].freeze
 
         def_node_matcher :group_by_transform_values_count?, <<-PATTERN
-          (send (send ({ send const array lvar} ...) :group_by (block_pass (sym :itself))) :transform_values (block_pass (sym :count)))
+          (send (send ({ send const array lvar } ...) :group_by (block_pass (sym :itself))) :transform_values (block_pass (sym :count)))
         PATTERN
 
         def on_send(node)
