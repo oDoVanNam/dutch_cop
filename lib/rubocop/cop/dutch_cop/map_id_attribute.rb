@@ -3,10 +3,10 @@
 module Rubocop
   module Cop
     module DutchCop
-      class EnumerableMapAttribute < RuboCop::Cop::Base
+      class MapIdAttribute < RuboCop::Cop::Base
         extend RuboCop::Cop::AutoCorrector
 
-        MSG = 'Prefer `pluck(:attribute)` over `map(&:attribute)` with Enumerable'
+        MSG = 'Prefer `pluck(:%<attribute>s)` over `map(&:%<attribute>s)` with primary key or foreign key.'
         RESTRICT_ON_SEND = [:map].freeze
 
         def_node_matcher :map_attribute, <<-PATTERN
@@ -14,9 +14,10 @@ module Rubocop
         PATTERN
 
         def on_send(node)
-          return unless (attr = map_attribute(node))
+          attr = map_attribute(node)
+          return if attr.nil? || !attr.to_s.match?('id')
 
-          add_offense(node, message: MSG) do |corrector|
+          add_offense(node, message: format(MSG, attribute: attr)) do |corrector|
             corrector.replace(node, "#{node.receiver.source}.pluck(:#{attr})")
           end
         end
